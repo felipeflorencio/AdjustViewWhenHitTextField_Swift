@@ -16,46 +16,50 @@ That could be applied for any object that of kind UIView, for example: UILabel, 
 Download project and see how we created or view, most important to know is, the right way in this case is use UIScrollView, that because if we handle with our UIView some weird situations, like a black view behind happens.   
 
 #Code
+
+We use Swift 3
+
 First at viewDidLoad method insert this notifications
 
 ```swift
 // Set observer for receive keyboard notifications
-NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWasShown:", name:"UIKeyboardDidShowNotification", object:nil)
+NotificationCenter.default.addObserver(self, selector:#selector(ViewController.keyboardWasShown(_:)), name:NSNotification.Name(rawValue: "UIKeyboardDidShowNotification"), object:nil)
+        
+NotificationCenter.default.addObserver(self, selector:#selector(ViewController.keyboardWillBeHidden(_:)), name:NSNotification.Name(rawValue: "UIKeyboardWillHideNotification"), object:nil)
 
-NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWillBeHidden:", name:"UIKeyboardWillHideNotification", object:nil)
+NotificationCenter.default.addObserver(self, selector:#selector(ViewController.userTappedOnField(_:)), name:NSNotification.Name(rawValue: "UITextFieldTextDidBeginEditingNotification"), object:nil)
 
-NSNotificationCenter.defaultCenter().addObserver(self, selector:"userTappedOnField:", name:"UITextFieldTextDidBeginEditingNotification", object:nil)
 ```
 
 Now we will create methods that will be called when keyboard will show up and dismiss
 
 ```swift
 // View readjust actions
-   func keyboardWasShown(notification: NSNotification) {
-
-       let info:NSDictionary = notification.userInfo!
-
-       let keyboardSize:CGSize = (info.objectForKey(UIKeyboardFrameBeginUserInfoKey)?.CGRectValue.size)!
-
-       let txtFieldView:CGPoint = selectedField!.frame.origin;
-
-       let txtFieldViewHeight:CGFloat = selectedField!.frame.size.height;
-
-       var visibleRect:CGRect = viewInsideScroll!.frame;
-
-       visibleRect.size.height -= keyboardSize.height;
-
-
-       if !CGRectContainsPoint(visibleRect, txtFieldView) {
-           let scrollPoint:CGPoint = CGPointMake(0.0, txtFieldView.y - visibleRect.size.height + (txtFieldViewHeight * 1.5))
-
-           scrollView?.setContentOffset(scrollPoint, animated: true)
-       }
+   func keyboardWasShown(_ notification: Notification) {
+    
+        let info:NSDictionary = notification.userInfo! as NSDictionary
+        
+        let keyboardSize:CGSize = ((info.object(forKey: UIKeyboardFrameBeginUserInfoKey) as AnyObject).cgRectValue.size)
+        
+        let txtFieldView:CGPoint = selectedField!.frame.origin;
+        
+        let txtFieldViewHeight:CGFloat = selectedField!.frame.size.height;
+        
+        var visibleRect:CGRect = viewInsideScroll!.frame;
+        
+        visibleRect.size.height -= keyboardSize.height;
+        
+        
+        if !visibleRect.contains(txtFieldView) {
+            let scrollPoint:CGPoint = CGPoint(x: 0.0, y: txtFieldView.y - visibleRect.size.height + (txtFieldViewHeight * 1.5))
+            
+            scrollView?.setContentOffset(scrollPoint, animated: true)
+        }
 
    }
 
-   func keyboardWillBeHidden(notification: NSNotification) {
-       scrollView?.setContentOffset(CGPointZero, animated: true)
+   func keyboardWillBeHidden(_ notification: Notification) {
+        scrollView?.setContentOffset(CGPoint.zero, animated: true)
    }
 
 ```
@@ -69,10 +73,10 @@ var selectedField:UITextField?
 
 Now create the method that will receive UITextfield notification, we already attached notification at viewDidLoad:
 ```swift
-func userTappedOnField(txtSelected: NSNotification){
-       if txtSelected.object is UITextField {
-          selectedField = txtSelected.object as? UITextField
-       }
+func userTappedOnField(_ txtSelected: Notification){
+      if txtSelected.object is UITextField {
+         selectedField = txtSelected.object as? UITextField
+      }
    }
 ```
 
@@ -97,46 +101,49 @@ Esse conceito pode ser aplicado para qualquer objeto to tipo UIView, por exemplo
 Faça o download / fork do projeto e veja como criamos nossa view, o mais importante a saber, é que a maneira correta nesse caso é usando uma UIScrollView, isso porquê se alterarmos direto nossa UIView poderá acontecer algumas situações estranhas, como uma "view" preta no fundo.
 
 #Código
+
+Usamos Swift 3
+
 Primeito no método viewDidLoad insira essa notificações
 
 ```swift
 // Set observer for receive keyboard notifications
-NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWasShown:", name:"UIKeyboardDidShowNotification", object:nil)
+NotificationCenter.default.addObserver(self, selector:#selector(ViewController.keyboardWasShown(_:)), name:NSNotification.Name(rawValue: "UIKeyboardDidShowNotification"), object:nil)
+        
+NotificationCenter.default.addObserver(self, selector:#selector(ViewController.keyboardWillBeHidden(_:)), name:NSNotification.Name(rawValue: "UIKeyboardWillHideNotification"), object:nil)
 
-NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWillBeHidden:", name:"UIKeyboardWillHideNotification", object:nil)
-
-NSNotificationCenter.defaultCenter().addObserver(self, selector:"userTappedOnField:", name:"UITextFieldTextDidBeginEditingNotification", object:nil)
+NotificationCenter.default.addObserver(self, selector:#selector(ViewController.userTappedOnField(_:)), name:NSNotification.Name(rawValue: "UITextFieldTextDidBeginEditingNotification"), object:nil)
 ```
 
 Agora nós vamos criar os métodos que irão lidar com o teclado quando ele subir e descer.
 
 ```swift
 // View readjust actions
-   func keyboardWasShown(notification: NSNotification) {
-
-       let info:NSDictionary = notification.userInfo!
-
-       let keyboardSize:CGSize = (info.objectForKey(UIKeyboardFrameBeginUserInfoKey)?.CGRectValue.size)!
-
-       let txtFieldView:CGPoint = selectedField!.frame.origin;
-
-       let txtFieldViewHeight:CGFloat = selectedField!.frame.size.height;
-
-       var visibleRect:CGRect = viewInsideScroll!.frame;
-
-       visibleRect.size.height -= keyboardSize.height;
-
-
-       if !CGRectContainsPoint(visibleRect, txtFieldView) {
-           let scrollPoint:CGPoint = CGPointMake(0.0, txtFieldView.y - visibleRect.size.height + (txtFieldViewHeight * 1.5))
-
-           scrollView?.setContentOffset(scrollPoint, animated: true)
-       }
+   func keyboardWasShown(_ notification: Notification) {
+    
+        let info:NSDictionary = notification.userInfo! as NSDictionary
+        
+        let keyboardSize:CGSize = ((info.object(forKey: UIKeyboardFrameBeginUserInfoKey) as AnyObject).cgRectValue.size)
+        
+        let txtFieldView:CGPoint = selectedField!.frame.origin;
+        
+        let txtFieldViewHeight:CGFloat = selectedField!.frame.size.height;
+        
+        var visibleRect:CGRect = viewInsideScroll!.frame;
+        
+        visibleRect.size.height -= keyboardSize.height;
+        
+        
+        if !visibleRect.contains(txtFieldView) {
+            let scrollPoint:CGPoint = CGPoint(x: 0.0, y: txtFieldView.y - visibleRect.size.height + (txtFieldViewHeight * 1.5))
+            
+            scrollView?.setContentOffset(scrollPoint, animated: true)
+        }
 
    }
 
-   func keyboardWillBeHidden(notification: NSNotification) {
-       scrollView?.setContentOffset(CGPointZero, animated: true)
+   func keyboardWillBeHidden(_ notification: Notification) {
+        scrollView?.setContentOffset(CGPoint.zero, animated: true)
    }
 
 ```
@@ -150,10 +157,10 @@ var selectedField:UITextField?
 Agora crie o método que irá receber os eventos de clique no nosso UITextField, nós inserimos essa notificação no nosso viewDidLoad:
 
 ```swift
-func userTappedOnField(txtSelected: NSNotification){
-       if txtSelected.object is UITextField {
-          selectedField = txtSelected.object as? UITextField
-       }
+func userTappedOnField(_ txtSelected: Notification){
+      if txtSelected.object is UITextField {
+         selectedField = txtSelected.object as? UITextField
+      }
    }
 ```
 

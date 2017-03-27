@@ -25,19 +25,19 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         // Set observer for receive keyboard notifications
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWasShown:", name:"UIKeyboardDidShowNotification", object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(ViewController.keyboardWasShown(_:)), name:NSNotification.Name(rawValue: "UIKeyboardDidShowNotification"), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWillBeHidden:", name:"UIKeyboardWillHideNotification", object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(ViewController.keyboardWillBeHidden(_:)), name:NSNotification.Name(rawValue: "UIKeyboardWillHideNotification"), object:nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"userTappedOnField:", name:"UITextFieldTextDidBeginEditingNotification", object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(ViewController.userTappedOnField(_:)), name:NSNotification.Name(rawValue: "UITextFieldTextDidBeginEditingNotification"), object:nil)
 
-        let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer.init(target:self, action:"hideKeyBoard")
+        let tapGesture:UITapGestureRecognizer = UITapGestureRecognizer.init(target:self, action:#selector(ViewController.hideKeyBoard))
 
         viewInsideScroll?.addGestureRecognizer(tapGesture)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
     
@@ -45,18 +45,18 @@ class ViewController: UIViewController {
         self.view.endEditing(true)
     }
     
-    func userTappedOnField(txtSelected: NSNotification){
+    func userTappedOnField(_ txtSelected: Notification){
         if txtSelected.object is UITextField {
            selectedField = txtSelected.object as? UITextField
         }
     }
     
     // View readjust actions
-    func keyboardWasShown(notification: NSNotification) {
+    func keyboardWasShown(_ notification: Notification) {
     
-        let info:NSDictionary = notification.userInfo!
+        let info:NSDictionary = notification.userInfo! as NSDictionary
         
-        let keyboardSize:CGSize = (info.objectForKey(UIKeyboardFrameBeginUserInfoKey)?.CGRectValue.size)!
+        let keyboardSize:CGSize = ((info.object(forKey: UIKeyboardFrameBeginUserInfoKey) as AnyObject).cgRectValue.size)
         
         let txtFieldView:CGPoint = selectedField!.frame.origin;
         
@@ -67,16 +67,16 @@ class ViewController: UIViewController {
         visibleRect.size.height -= keyboardSize.height;
         
         
-        if !CGRectContainsPoint(visibleRect, txtFieldView) {
-            let scrollPoint:CGPoint = CGPointMake(0.0, txtFieldView.y - visibleRect.size.height + (txtFieldViewHeight * 1.5))
+        if !visibleRect.contains(txtFieldView) {
+            let scrollPoint:CGPoint = CGPoint(x: 0.0, y: txtFieldView.y - visibleRect.size.height + (txtFieldViewHeight * 1.5))
             
             scrollView?.setContentOffset(scrollPoint, animated: true)
         }
     
     }
     
-    func keyboardWillBeHidden(notification: NSNotification) {
-        scrollView?.setContentOffset(CGPointZero, animated: true)
+    func keyboardWillBeHidden(_ notification: Notification) {
+        scrollView?.setContentOffset(CGPoint.zero, animated: true)
     }
 
 }

@@ -11,7 +11,7 @@
 		A5A252CA1C428D23005D281C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A252C91C428D23005D281C /* ViewController.swift */; };
 		A5A252CF1C428D23005D281C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5A252CE1C428D23005D281C /* Assets.xcassets */; };
 		A5A252D21C428D23005D281C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A252D01C428D23005D281C /* LaunchScreen.storyboard */; };
-		A5A252DD1C42BD8A005D281C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A252DB1C42BD8A005D281C /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
+		A5A252DD1C42BD8A005D281C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5A252DB1C42BD8A005D281C /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +95,7 @@
 				TargetAttributes = {
 					A5A252C31C428D23005D281C = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0820;
 					};
 				};
 			};
@@ -252,6 +253,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.felipe.AdjustViewWhenHitUITextField;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -263,6 +265,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.felipe.AdjustViewWhenHitUITextField;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -285,6 +288,7 @@
 				A5A252D81C428D23005D281C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
